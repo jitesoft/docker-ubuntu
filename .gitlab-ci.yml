@@ -33,10 +33,10 @@ stages:
     - echo ${CI_JOB_TOKEN} | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
     - echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
   script:
-    - docker build -t ${CI_REGISTRY_IMAGE}:${DIST} .
+    - docker build -t ${CI_REGISTRY_IMAGE}:${DIST}-tmp .
     - |
       for tag in ${TAGS}; do
-        docker tag ${CI_REGISTRY_IMAGE}:${tag}
+        docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp ${CI_REGISTRY_IMAGE}:${tag}
         docker push ${CI_REGISTRY_IMAGE}:${tag}
       done
 
