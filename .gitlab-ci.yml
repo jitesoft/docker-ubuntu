@@ -16,8 +16,8 @@ stages:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
-    - gpg --verify SHASUMS.gpg ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz
-    - cat SHA256SUMS | grep " ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz\$"" | sha256sum -c -
+    - gpg --verify SHA256SUMS.gpg SHA256SUMS
+    - cat SHA256SUMS | grep " *ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz\$" | sha256sum -c -
     - mv ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz ubuntu-root.tar.gz
   artifacts:
     paths:
