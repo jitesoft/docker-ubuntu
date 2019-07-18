@@ -37,7 +37,9 @@ stages:
     - |
       for tag in ${TAGS}; do
         docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp ${CI_REGISTRY_IMAGE}:${tag}
+        docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp jitesoft/ubuntu:${tag}
         docker push ${CI_REGISTRY_IMAGE}:${tag}
+        docker push jitesoft/ubuntu:${tag}
       done
 
 download:eoan:
@@ -66,6 +68,8 @@ download:bionic:
 
 build:eoan:
   extends: .build
+  dependencies:
+    - downloads:eoan
   variables:
     DIST: eoan
     VERSION: "19.10"
@@ -74,22 +78,26 @@ build:eoan:
 
 build:disco:
   extends: .build
+  dependencies:
+    - downloads:disco
   variables:
     DIST: disco
     VERSION: "19.04"
-    TAGS: "eoan 19.04"
-
+    TAGS: "disco 19.04"
 
 build:cosmic:
   extends: .build
+  dependencies:
+    - downloads:cosmic
   variables:
     DIST: cosmic
     VERSION: "18.10"
     TAGS: "cosmic 18.10"
 
-
 build:bionic:
   extends: .build
+  dependencies:
+    - downloads:bionic
   variables:
     DIST: bionic
     VERSION: "18.04"
