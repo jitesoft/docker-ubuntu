@@ -22,6 +22,10 @@ Tags are named after version name and version number, latest lts is tagged with 
   * `cosmic`, `18.10`
   * `bionic`, `18.04`
 
+## Dockerfile
+
+Dockerfile can be found at [GitLab](https://gitlab.com/jitesoft/dockerfiles/ubuntu) and [GitHub](https://github.com/jitesoft/docker-ubuntu)
+
 # Licenses
 
 The files in this repo is released under the MIT license, with exception to the snippet of code
