@@ -69,7 +69,7 @@ download:bionic:
 build:eoan:
   extends: .build
   dependencies:
-    - downloads:eoan
+    - download:eoan
   variables:
     DIST: eoan
     VERSION: "19.10"
@@ -79,7 +79,7 @@ build:eoan:
 build:disco:
   extends: .build
   dependencies:
-    - downloads:disco
+    - download:disco
   variables:
     DIST: disco
     VERSION: "19.04"
@@ -88,7 +88,7 @@ build:disco:
 build:cosmic:
   extends: .build
   dependencies:
-    - downloads:cosmic
+    - download:cosmic
   variables:
     DIST: cosmic
     VERSION: "18.10"
@@ -97,7 +97,7 @@ build:cosmic:
 build:bionic:
   extends: .build
   dependencies:
-    - downloads:bionic
+    - download:bionic
   variables:
     DIST: bionic
     VERSION: "18.04"
