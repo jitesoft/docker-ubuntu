@@ -27,11 +27,6 @@ stages:
 .build:
   stage: build
   image: registry.gitlab.com/jitesoft/dockerfiles/docker:latest
-  services:
-    - registry.gitlab.com/jitesoft/dockerfiles/docker/dind:latest
-  before_script:
-    - echo ${CI_JOB_TOKEN} | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
-    - echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
   script:
     - docker build -t ${CI_REGISTRY_IMAGE}:${DIST}-tmp --label "com.jitesoft.app.ubuntu.dist=${DIST}" --label "com.jitesoft.app.ubuntu.version=${VERSION}" .
     - |
