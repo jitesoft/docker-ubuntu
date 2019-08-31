@@ -25,6 +25,14 @@ Tags are named after version name and version number, latest lts is tagged with 
   * `cosmic`, `18.10`
   * `bionic`, `18.04`
 
+### Quay.io
+
+* `quay.io/jitesoft/ubuntu`
+  * `eoan`, `19.10`, `lts`, `latest`
+  * `disco`, `19.04`
+  * `cosmic`, `18.10`
+  * `bionic`, `18.04`
+
 ## Dockerfile
 
 Dockerfile can be found at [GitLab](https://gitlab.com/jitesoft/dockerfiles/ubuntu) and [GitHub](https://github.com/jitesoft/docker-ubuntu)
