@@ -1,5 +1,8 @@
 # Ubuntu
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/jitesoft/ubuntu.svg)](https://cloud.docker.com/u/jitesoft/repository/docker/jitesoft/ubuntu)
+[![Back project](https://img.shields.io/badge/Open%20Collective-Tip%20the%20devs!-blue.svg)](https://opencollective.com/jitesoft-open-source)
+
 Dockerfile with Ubuntu core built from https://partner-images.canonical.com/core/
 
 ## Tags
@@ -38,3 +41,8 @@ Ubuntu licenses and information can be found at: https://ubuntu.com/licensing
 ### Image labels
 
 This image follows the [Jitesoft image label specification 1.0.0](https://gitlab.com/snippets/1866155).
+
+### Licenses
+
+Files in this repository is released under the MIT license.  
+Read the Ubuntu license [here](https://ubuntu.com/licensing).

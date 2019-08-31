@@ -38,7 +38,9 @@ stages:
       for tag in ${TAGS}; do
         docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp ${CI_REGISTRY_IMAGE}:${tag}
         docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp jitesoft/ubuntu:${tag}
+        docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp quay.io/jitesoft/ubuntu:${tag}
         docker push ${CI_REGISTRY_IMAGE}:${tag}
+        docker push quay.io/jitesoft/ubuntu:${tag}
         docker push jitesoft/ubuntu:${tag}
       done
 
