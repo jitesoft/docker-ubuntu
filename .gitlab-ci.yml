@@ -8,6 +8,8 @@ stages:
 
 .download:
   stage: download
+  variables:
+    GIT_STRATEGY: none
   image: registry.gitlab.com/jitesoft/dockerfiles/alpine:latest
   before_script:
     - apk add --no-cache gnupg grep curl
@@ -25,6 +27,8 @@ stages:
     expire_in: 5 days
 
 .build:
+  variables:
+    DOCKER_BUILDKIT: 1
   stage: build
   image: registry.gitlab.com/jitesoft/dockerfiles/docker:latest
   script:
@@ -72,7 +76,6 @@ build:eoan:
     VERSION: "19.10"
     TAGS: "eoan 19.10 lts latest"
 
-
 build:disco:
   extends: .build
   dependencies:
@@ -102,24 +105,36 @@ build:bionic:
 
 scan:eoan:
   stage: scan
+  needs:
+    - build:eoan
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:eoan"
+    GIT_STRATEGY: none
 
 scan:disco:
+  needs:
+    - build:disco
   stage: scan
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:disco"
+    GIT_STRATEGY: none
 
 scan:cosmic:
+  needs:
+    - build:cosmic
   stage: scan
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:cosmic"
+    GIT_STRATEGY: none
 
 scan:bionic:
+  needs:
+    - build:bionic
   stage: scan
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:bionic"
+    GIT_STRATEGY: none
