@@ -20,7 +20,6 @@ variables:
     - mv helper.sh helper
     - chmod +x helper
   script:
-    - if [ -f "keys.out" ]; then gpg --import keys.out; fi
     - gpg --list-keys ${GPG_KEY} || gpg --receive-keys D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81
     - gpg --export > keys.out
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
