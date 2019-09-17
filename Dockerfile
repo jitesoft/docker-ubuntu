@@ -10,7 +10,7 @@ LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       com.jitesoft.project.repo.issues="https://gitlab.com/jitesoft/dockerfiles/ubuntu/issues" \
       com.jitesoft.project.registry.uri="registry.gitlab.com/jitesoft/dockerfiles/ubuntu" \
       com.jitesoft.app.ubuntu.version="${VERSION}" \
-      com.jitesoft.app.ubuntu.name="${NAME}" \
+      com.jitesoft.app.ubuntu.version.name="${NAME}" \
       com.jitesoft.build.arch="${TARGETPLATFORM}"
 
 ADD artifacts/${TARGETPLATFORM}/ubuntu-root.tar.gz /
