@@ -40,7 +40,7 @@ variables:
   artifacts:
     paths:
       - artifacts/
-    expire_in: 1 hour
+    expire_in: 20 minutes
   cache:
     key: ubuntu.gpg.keyring
     paths:
