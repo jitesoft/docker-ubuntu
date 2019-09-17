@@ -13,6 +13,7 @@ variables:
   stage: download
   variables:
     GIT_STRATEGY: none
+    GPG_KEY: D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81
   image: registry.gitlab.com/jitesoft/dockerfiles/alpine:latest
   before_script:
     - apk add --no-cache gnupg grep curl
@@ -20,7 +21,7 @@ variables:
     - mv helper.sh helper
     - chmod +x helper
   script:
-    - gpg --list-keys ${GPG_KEY} || gpg --receive-keys D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81
+    - gpg --list-keys ${GPG_KEY} || gpg --receive-keys ${GPG_KEY}
     - gpg --export > keys.out
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
