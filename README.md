@@ -9,27 +9,29 @@ Dockerfile with Ubuntu core built from https://partner-images.canonical.com/core
 
 Tags are named after version name and version number, latest lts is tagged with `lts` and latest version is tagged with `latest`.
 
+Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `armv7`, `ppc64le`, `s390x`, `x86`
+
 ### Docker Hub
 
 
-* `eoan`, `19.10`, `lts`, `latest`
-* `disco`, `19.04`
+* `eoan`, `19.10`, `latest`
+* `disco`, `19.04`, `lts`
 * `cosmic`, `18.10`
 * `bionic`, `18.04`
 
 ### GitLab
 
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
-  * `eoan`, `19.10`, `lts`, `latest`
-  * `disco`, `19.04`
+  * `eoan`, `19.10`, `latest`
+  * `disco`, `19.04`, `lts`
   * `cosmic`, `18.10`
   * `bionic`, `18.04`
 
 ### Quay.io
 
 * `quay.io/jitesoft/ubuntu`
-  * `eoan`, `19.10`, `lts`, `latest`
-  * `disco`, `19.04`
+  * `eoan`, `19.10`, `latest`
+  * `disco`, `19.04`, `lts`
   * `cosmic`, `18.10`
   * `bionic`, `18.04`
 

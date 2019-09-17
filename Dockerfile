@@ -1,7 +1,7 @@
 FROM scratch
-ARG VERSION="x.x"
-ARG ARC="x86_64"
-ARG DIST="x"
+ARG VERSION
+ARG NAME
+ARG TARGETPLATFORM
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       maintainer.org="Jitesoft" \
       maintainer.org.uri="https://jitesoft.com" \
@@ -10,10 +10,10 @@ LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       com.jitesoft.project.repo.issues="https://gitlab.com/jitesoft/dockerfiles/ubuntu/issues" \
       com.jitesoft.project.registry.uri="registry.gitlab.com/jitesoft/dockerfiles/ubuntu" \
       com.jitesoft.app.ubuntu.version="${VERSION}" \
-      com.jitesoft.app.ubuntu.dist="${DIST}" \
-      com.jitesoft.build.arch="${ARC}"
+      com.jitesoft.app.ubuntu.name="${NAME}" \
+      com.jitesoft.build.arch="${TARGETPLATFORM}"
 
-ADD ubuntu-root.tar.gz /
+ADD artifacts/${TARGETPLATFORM}/ubuntu-root.tar.gz /
 
 # The following tweeks are currently copied from the official Ubuntu image at https://github.com/tianon/docker-brew-ubuntu-core/ (released under the Apache 2.0 license)
 RUN set -xe \

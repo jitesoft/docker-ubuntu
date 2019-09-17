@@ -6,6 +6,9 @@ stages:
   - build
   - scan
 
+variables:
+  ARCHITECTURES: "amd64 arm64 armhf i386 ppc64el s390x"
+
 .download:
   stage: download
   variables:
@@ -13,35 +16,59 @@ stages:
   image: registry.gitlab.com/jitesoft/dockerfiles/alpine:latest
   before_script:
     - apk add --no-cache gnupg grep curl
+    - wget https://gist.githubusercontent.com/Johannestegner/093e8053eabd795ed84b83e9610aed6b/raw/helper.sh
+    - mv helper.sh helper
+    - chmod +x helper
   script:
-    - gpg --receive-keys D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81
-    - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz"
+    - if [ -f "keys.out" ]; then gpg --import keys.out fi
+    - gpg --list-keys ${GPG_KEY} || gpg --receive-keys D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81
+    - gpg --export > keys.out
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
+    - |
+      for ARCH in ${ARCHITECTURES}; do
+        curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz"
+      done
     - gpg --verify SHA256SUMS.gpg SHA256SUMS
-    - cat SHA256SUMS | grep " *ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz\$" | sha256sum -c -
-    - mv ubuntu-${DIST}-core-cloudimg-amd64-root.tar.gz ubuntu-root.tar.gz
+    - sha256sum -c SHA256SUMS
+    - |
+      for ARCH in ${ARCHITECTURES}; do
+        DOCKER_ARCH=$(./helper arch ${ARCH})
+        mkdir -p artifacts/${DOCKER_ARCH}
+        mv ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz artifacts/${DOCKER_ARCH}/ubuntu-root.tar.gz
+      done
   artifacts:
     paths:
-      - ${CI_PROJECT_DIR}/ubuntu-root.tar.gz
-    expire_in: 5 days
+      - artifacts/
+    expire_in: 1 hour
+  cache:
+    key: ubuntu.gpg.keyring
+    paths:
+      - keys.out
 
 .build:
   variables:
     DOCKER_BUILDKIT: 1
   stage: build
-  image: registry.gitlab.com/jitesoft/dockerfiles/docker:latest
+  image: registry.gitlab.com/jitesoft/dockerfiles/docker/buildx:latest
+  before_script:
+    - wget https://gist.githubusercontent.com/Johannestegner/093e8053eabd795ed84b83e9610aed6b/raw/helper.sh
+    - mv helper.sh helper
+    - chmod +x helper
   script:
-    - docker build -t ${CI_REGISTRY_IMAGE}:${DIST}-tmp --label "com.jitesoft.app.ubuntu.dist=${DIST}" --label "com.jitesoft.app.ubuntu.version=${VERSION}" .
-    - |
-      for tag in ${TAGS}; do
-        docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp ${CI_REGISTRY_IMAGE}:${tag}
-        docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp jitesoft/ubuntu:${tag}
-        docker tag ${CI_REGISTRY_IMAGE}:${DIST}-tmp quay.io/jitesoft/ubuntu:${tag}
-        docker push ${CI_REGISTRY_IMAGE}:${tag}
-        docker push quay.io/jitesoft/ubuntu:${tag}
-        docker push jitesoft/ubuntu:${tag}
-      done
+    - TAG_LIST=$(./helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu" "${TAGS}")
+    - ARCH_LIST=$(./helper archlist ${ARCHITECTURES})
+    - echo "Building for following architectures ${ARCH_LIST}."
+    - docker buildx build --platform ${ARCH_LIST} --push ${TAG_LIST} --progress plain --build-arg VERSION=${VERSION} --build-arg NAME=${DIST} .
+  tags:
+    - jitesoft
+    - buildx
+    - amd64
+    - arm7
+    - arm64
+    - x86
+    - ppc64le
+    - s390x
 
 download:eoan:
   extends: .download
@@ -74,7 +101,7 @@ build:eoan:
   variables:
     DIST: eoan
     VERSION: "19.10"
-    TAGS: "eoan 19.10 lts latest"
+    TAGS: "eoan,19.10,latest"
 
 build:disco:
   extends: .build
@@ -83,7 +110,7 @@ build:disco:
   variables:
     DIST: disco
     VERSION: "19.04"
-    TAGS: "disco 19.04"
+    TAGS: "disco,19.04,lts"
 
 build:cosmic:
   extends: .build
@@ -92,7 +119,7 @@ build:cosmic:
   variables:
     DIST: cosmic
     VERSION: "18.10"
-    TAGS: "cosmic 18.10"
+    TAGS: "cosmic,18.10"
 
 build:bionic:
   extends: .build
@@ -101,7 +128,7 @@ build:bionic:
   variables:
     DIST: bionic
     VERSION: "18.04"
-    TAGS: "bionic 18.04"
+    TAGS: "bionic,18.04"
 
 scan:eoan:
   needs:
