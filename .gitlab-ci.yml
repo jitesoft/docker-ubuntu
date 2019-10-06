@@ -54,7 +54,7 @@ variables:
   variables:
     DOCKER_BUILDKIT: 1
   stage: build
-  image: registry.gitlab.com/jitesoft/dockerfiles/docker/misc:latest
+  image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu" "${TAGS}")
     - ARCH_LIST=$(helper archlist ${ARCHITECTURES})
