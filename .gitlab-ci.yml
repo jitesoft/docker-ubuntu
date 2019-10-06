@@ -54,25 +54,12 @@ variables:
   variables:
     DOCKER_BUILDKIT: 1
   stage: build
-  image: registry.gitlab.com/jitesoft/dockerfiles/docker/buildx:latest
-  before_script:
-    - wget https://gist.githubusercontent.com/Johannestegner/093e8053eabd795ed84b83e9610aed6b/raw/helper.sh
-    - mv helper.sh helper
-    - chmod +x helper
+  image: registry.gitlab.com/jitesoft/dockerfiles/docker/misc:latest
   script:
-    - TAG_LIST=$(./helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu" "${TAGS}")
-    - ARCH_LIST=$(./helper archlist ${ARCHITECTURES})
-    - echo "Building for following architectures ${ARCH_LIST}."
+    - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu" "${TAGS}")
+    - ARCH_LIST=$(helper archlist ${ARCHITECTURES})
     - docker buildx build --platform ${ARCH_LIST} --push ${TAG_LIST} --progress plain --build-arg VERSION=${VERSION} --build-arg NAME=${DIST} .
-  tags:
-    - jitesoft
-    - buildx
-    - amd64
-    - arm7
-    - arm64
-    - x86
-    - ppc64le
-    - s390x
+  tags: [ jitesoft, buildx, amd64, arm7, arm64, x86, ppc64le, s390x ]
 
 download:eoan:
   extends: .download

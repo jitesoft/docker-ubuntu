@@ -2,6 +2,7 @@ FROM scratch
 ARG VERSION
 ARG NAME
 ARG TARGETPLATFORM
+ARG TARGETARCH
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       maintainer.org="Jitesoft" \
       maintainer.org.uri="https://jitesoft.com" \
@@ -11,7 +12,7 @@ LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       com.jitesoft.project.registry.uri="registry.gitlab.com/jitesoft/dockerfiles/ubuntu" \
       com.jitesoft.app.ubuntu.version="${VERSION}" \
       com.jitesoft.app.ubuntu.version.name="${NAME}" \
-      com.jitesoft.build.arch="${TARGETPLATFORM}"
+      com.jitesoft.build.arch="${TARGETARCH}"
 
 ADD artifacts/${TARGETPLATFORM}/ubuntu-root.tar.gz /
 
