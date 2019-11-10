@@ -1,7 +1,8 @@
 # Ubuntu
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/jitesoft/ubuntu.svg)](https://cloud.docker.com/u/jitesoft/repository/docker/jitesoft/ubuntu)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jitesoft/ubuntu.svg)](https://hub.docker.com/r/jitesoft/ubuntu)
 [![Back project](https://img.shields.io/badge/Open%20Collective-Tip%20the%20devs!-blue.svg)](https://opencollective.com/jitesoft-open-source)
+[![pipeline status](https://gitlab.com/jitesoft/dockerfiles/ubuntu/badges/master/pipeline.svg)](https://gitlab.com/jitesoft/dockerfiles/ubuntu/commits/master)
 
 Dockerfile with Ubuntu core built from https://partner-images.canonical.com/core/
 
@@ -22,18 +23,18 @@ Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `a
 ### GitLab
 
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
-  * `eoan`, `19.10`, `latest`
-  * `disco`, `19.04`, `lts`
-  * `cosmic`, `18.10`
-  * `bionic`, `18.04`
+    * `eoan`, `19.10`, `latest`
+    * `disco`, `19.04`, `lts`
+    * `cosmic`, `18.10`
+    * `bionic`, `18.04`
 
 ### Quay.io
 
 * `quay.io/jitesoft/ubuntu`
-  * `eoan`, `19.10`, `latest`
-  * `disco`, `19.04`, `lts`
-  * `cosmic`, `18.10`
-  * `bionic`, `18.04`
+    * `eoan`, `19.10`, `latest`
+    * `disco`, `19.04`, `lts`
+    * `cosmic`, `18.10`
+    * `bionic`, `18.04`
 
 ## Dockerfile
 

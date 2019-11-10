@@ -59,7 +59,7 @@ variables:
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu" "${TAGS}")
     - ARCH_LIST=$(helper archlist ${ARCHITECTURES})
     - docker buildx build --platform ${ARCH_LIST} --push ${TAG_LIST} --progress plain --build-arg VERSION=${VERSION} --build-arg NAME=${DIST} .
-  tags: [ jitesoft, buildx, amd64, arm7, arm64, x86, ppc64le, s390x ]
+  tags: [ jitesoft, buildx, protected ]
 
 download:eoan:
   extends: .download
