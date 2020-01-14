@@ -14,26 +14,25 @@ Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `a
 
 ### Docker Hub
 
-
+* `focal`, `20.04`, `next`
 * `eoan`, `19.10`, `latest`
 * `disco`, `19.04`, `lts`
-* `cosmic`, `18.10`
 * `bionic`, `18.04`
 
 ### GitLab
 
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
+    * `focal`, `20.04`, `next`
     * `eoan`, `19.10`, `latest`
     * `disco`, `19.04`, `lts`
-    * `cosmic`, `18.10`
     * `bionic`, `18.04`
 
 ### Quay.io
 
 * `quay.io/jitesoft/ubuntu`
+    * `focal`, `20.04`, `next`
     * `eoan`, `19.10`, `latest`
     * `disco`, `19.04`, `lts`
-    * `cosmic`, `18.10`
     * `bionic`, `18.04`
 
 ## Dockerfile

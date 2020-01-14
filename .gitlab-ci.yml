@@ -73,11 +73,11 @@ download:disco:
     GIT_STRATEGY: none
     DIST: disco
 
-download:cosmic:
+download:focal:
   extends: .download
   variables:
     GIT_STRATEGY: none
-    DIST: cosmic
+    DIST: focal
 
 download:bionic:
   extends: .download
@@ -103,14 +103,14 @@ build:disco:
     VERSION: "19.04"
     TAGS: "disco,19.04,lts"
 
-build:cosmic:
+build:focal:
   extends: .build
   needs:
-    - download:cosmic
+    - download:focal
   variables:
-    DIST: cosmic
-    VERSION: "18.10"
-    TAGS: "cosmic,18.10"
+    DIST: focal
+    VERSION: "20.04"
+    TAGS: "focal,20.04,next"
 
 build:bionic:
   extends: .build
@@ -137,12 +137,12 @@ scan:disco:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:disco"
     GIT_STRATEGY: none
 
-scan:cosmic:
+scan:focal:
   needs:
-    - build:cosmic
+    - build:focal
   extends: .container_scanning
   variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:cosmic"
+    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:focal"
     GIT_STRATEGY: none
 
 scan:bionic:
