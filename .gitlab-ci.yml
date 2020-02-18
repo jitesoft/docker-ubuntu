@@ -76,7 +76,6 @@ download:focal:
   variables:
     GIT_STRATEGY: none
     DIST: focal
-    ARCHITECTURES: "amd64 arm64"
 
 download:bionic:
   extends: .download
