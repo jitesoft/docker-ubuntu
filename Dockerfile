@@ -3,6 +3,9 @@ ARG VERSION
 ARG NAME
 ARG TARGETPLATFORM
 ARG TARGETARCH
+ARG BUILD_TIME
+ARG SHORT_SHA
+
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       maintainer.org="Jitesoft" \
       maintainer.org.uri="https://jitesoft.com" \
@@ -12,7 +15,15 @@ LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       com.jitesoft.project.registry.uri="registry.gitlab.com/jitesoft/dockerfiles/ubuntu" \
       com.jitesoft.app.ubuntu.version="${VERSION}" \
       com.jitesoft.app.ubuntu.version.name="${NAME}" \
-      com.jitesoft.build.arch="${TARGETARCH}"
+      com.jitesoft.build.arch="${TARGETARCH}" \
+      # Open Container labels.
+      org.opencontainers.image.created="${BUILD_TIME}" \
+      org.opencontainers.image.authors="Johannes Tegnér <johannes@jitesoft.com>" \
+      org.opencontainers.image.url="https://gitlab.com/jitesoft/dockerfiles/ubuntu" \
+      org.opencontainers.image.source="https://gitlab.com/jitesoft/dockerfiles/ubuntu" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.vendor="Jitesoft" \
+      org.opencontainers.image.revision="${SHORT_SHA}"
 
 ADD artifacts/${TARGETPLATFORM}/ubuntu-root.tar.gz /
 
