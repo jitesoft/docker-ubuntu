@@ -3,8 +3,6 @@ ARG VERSION
 ARG NAME
 ARG TARGETPLATFORM
 ARG TARGETARCH
-ARG BUILD_TIME
-ARG SHORT_SHA
 
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       maintainer.org="Jitesoft" \

@@ -10,6 +10,13 @@ variables:
   ARCHITECTURES: "amd64 arm64 armhf i386 ppc64el s390x"
 
 .download:
+  only:
+    changes:
+      - Dockerfile
+      - .gitlab-ci.yml
+  except:
+    variables:
+      - $ONLY == "CONTAINER_SCAN"
   stage: download
   variables:
     GIT_STRATEGY: none
@@ -51,6 +58,9 @@ variables:
       - keys.out
 
 .build:
+  except:
+    variables:
+      - $ONLY == "CONTAINER_SCAN"
   stage: build
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
@@ -121,32 +131,24 @@ build:bionic:
     TAGS: "bionic,18.04"
 
 scan:eoan:
-  needs:
-    - build:eoan
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:eoan"
     GIT_STRATEGY: none
 
 scan:disco:
-  needs:
-    - build:disco
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:disco"
     GIT_STRATEGY: none
 
 scan:focal:
-  needs:
-    - build:focal
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:focal"
     GIT_STRATEGY: none
 
 scan:bionic:
-  needs:
-    - build:bionic
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:bionic"
