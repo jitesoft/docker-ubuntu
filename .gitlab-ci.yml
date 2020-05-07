@@ -75,11 +75,11 @@ download:eoan:
     GIT_STRATEGY: none
     DIST: eoan
 
-download:disco:
+download:groovy:
   extends: .download
   variables:
     GIT_STRATEGY: none
-    DIST: disco
+    DIST: groovy
 
 download:focal:
   extends: .download
@@ -100,16 +100,16 @@ build:eoan:
   variables:
     DIST: eoan
     VERSION: "19.10"
-    TAGS: "eoan,19.10,latest"
+    TAGS: "eoan,19.10"
 
-build:disco:
+build:groovy:
   extends: .build
   needs:
-    - download:disco
+    - download:groovy
   variables:
-    DIST: disco
-    VERSION: "19.04"
-    TAGS: "disco,19.04,lts"
+    DIST: groovy
+    VERSION: "20.10"
+    TAGS: "groovy,20.10,next"
 
 build:focal:
   extends: .build
@@ -118,7 +118,7 @@ build:focal:
   variables:
     DIST: focal
     VERSION: "20.04"
-    TAGS: "focal,20.04,next"
+    TAGS: "focal,20.04,latest,lts"
     ARCHITECTURES: "amd64 arm64"
 
 build:bionic:
@@ -136,10 +136,10 @@ scan:eoan:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:eoan"
     GIT_STRATEGY: none
 
-scan:disco:
+scan:groovy:
   extends: .container_scanning
   variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:disco"
+    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:groovy"
     GIT_STRATEGY: none
 
 scan:focal:
