@@ -58,6 +58,10 @@ variables:
       - keys.out
 
 .build:
+  only:
+    changes:
+      - Dockerfile
+      - .gitlab-ci.yml
   except:
     variables:
       - $ONLY == "CONTAINER_SCAN"
