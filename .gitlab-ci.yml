@@ -1,5 +1,5 @@
 include:
-  - https://gitlab.com/jitesoft/gitlab-ci-lib/raw/master/container_scan-v2.yml
+  - https://gitlab.com/jitesoft/gitlab-ci-lib/raw/master/Scan/trivy.yml
 
 stages:
   - download
@@ -135,24 +135,28 @@ build:bionic:
     TAGS: "bionic,18.04"
 
 scan:eoan:
+  tags: [ protected, jitesoft ]
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:eoan"
     GIT_STRATEGY: none
 
 scan:groovy:
+  tags: [ protected, jitesoft ]
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:groovy"
     GIT_STRATEGY: none
 
 scan:focal:
+  tags: [ protected, jitesoft ]
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:focal"
     GIT_STRATEGY: none
 
 scan:bionic:
+  tags: [ protected, jitesoft ]
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:bionic"
