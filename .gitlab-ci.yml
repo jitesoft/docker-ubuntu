@@ -110,6 +110,7 @@ build:groovy:
     DIST: groovy
     VERSION: "20.10"
     TAGS: "groovy,20.10,next"
+    ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
 
 build:focal:
   extends: .build
