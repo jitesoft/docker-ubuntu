@@ -18,7 +18,6 @@ LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
 ADD artifacts/${TARGETPLATFORM}/ubuntu-root.tar.gz /
 
 # The following tweeks are currently copied from the official Ubuntu image at https://github.com/tianon/docker-brew-ubuntu-core/ (released under the Apache 2.0 license)
-SHELL ["/bin/bash", "-c"]
 RUN set -xe \
  && echo '#!/bin/sh' > /usr/sbin/policy-rc.d \
  && echo 'exit 101' >> /usr/sbin/policy-rc.d \

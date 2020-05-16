@@ -79,6 +79,7 @@ download:groovy:
   variables:
     GIT_STRATEGY: none
     DIST: groovy
+    ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
 
 download:focal:
   extends: .download
