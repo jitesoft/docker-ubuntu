@@ -10,13 +10,10 @@ variables:
   ARCHITECTURES: "amd64 arm64 armhf i386 ppc64el s390x"
 
 .download:
-  only:
-    changes:
-      - Dockerfile
-      - .gitlab-ci.yml
-  except:
-    variables:
-      - $ONLY == "CONTAINER_SCAN"
+  rules:
+    - if: '$ONLY == "CONTAINER_SCAN"'
+      when: never
+    - when: on_success
   stage: download
   variables:
     GIT_STRATEGY: none
@@ -58,13 +55,10 @@ variables:
       - keys.out
 
 .build:
-  only:
-    changes:
-      - Dockerfile
-      - .gitlab-ci.yml
-  except:
-    variables:
-      - $ONLY == "CONTAINER_SCAN"
+  rules:
+    - if: '$ONLY == "CONTAINER_SCAN"'
+      when: never
+    - when: on_success
   stage: build
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
