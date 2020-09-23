@@ -63,7 +63,7 @@ variables:
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
     # quay.io/jitesoft/ubuntu
-    - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu" "${TAGS}")
+    - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu,ghcr.io/jitesoft/ubuntu" "${TAGS}")
     - ARCH_LIST=$(helper archlist ${ARCHITECTURES})
     - docker buildx build --platform ${ARCH_LIST} --push ${TAG_LIST} --progress plain --build-arg VERSION=${VERSION} --build-arg NAME=${DIST} .
   tags: [ jitesoft, buildx, protected ]
