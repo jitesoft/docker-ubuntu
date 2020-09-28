@@ -90,7 +90,13 @@ gpg:
   before_script:
     - gpg --import keys.out
   script:
-    - if [ "${ARCH}" == "i386" ] && [[ "${DIST}" != "bionic" || "${DIST}" != "eoan" ]]; then exit 0; fi
+    - |
+      if [ "${ARCH}" == "i386" ]; then
+        if [ "${DIST}" != "bionic" ] && [ "${DIST}" != "eoan" ]; then
+          echo "Arch is i386, can not build ${DIST} for i386 so skipping job"
+          exit 0
+        fi
+      fi
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz"
@@ -105,8 +111,6 @@ gpg:
     paths:
       - artifacts/
       - sha-${DIST}.txt
-    expire_in: 20 minutes
-
 
 download:eoan:
   extends: .download
