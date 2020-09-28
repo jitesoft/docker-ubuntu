@@ -63,10 +63,8 @@ check:
     GIT_STRATEGY: none
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
-    - echo "${ARCH}"
-    - echo "${GPG_KEY}"
     - if [ "${ARCH}" == "i386" ] && [[ "${DIST}" != "bionic" || "${DIST}" != "eoan" ]]; then exit 0; fi
-    - gpg --receive-keys "${GPG_KEY}"
+    - gpg --keyserver pgp.mit.edu --recv-keys "${GPG_KEY}" || gpg --keyserver keyserver.pgp.com --recv-keys "${GPG_KEY}" || gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "${GPG_KEY}"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz"
