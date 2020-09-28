@@ -49,7 +49,32 @@ check:
     paths:
       - sha-${DIST}.txt
 
+gpg:
+  image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
+  stage: check
+  rules:
+    - if: "$BUILD"
+      when: always
+    - if: "$SCAN"
+      when: never
+    - when: never
+  script:
+    - if [ -f keys.out ]; then gpg --import keys.out; fi
+    - gpg --list-keys ${GPG_KEY} || (gpg --keyserver pgp.mit.edu --recv-keys "${GPG_KEY}" || gpg --keyserver keyserver.pgp.com --recv-keys "${GPG_KEY}" || gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "${GPG_KEY}")
+    - gpg --export > keys.out
+  artifacts:
+    paths:
+      - keys.out
+  cache:
+    key: ubuntu.gpg.keyring
+    policy: pull
+    paths:
+      - keys.out
+
 .download:
+  needs:
+    - job: gpg
+      artifacts: true
   stage: download
   parallel:
     matrix:
@@ -62,9 +87,10 @@ check:
   variables:
     GIT_STRATEGY: none
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
+  before_script:
+    - gpg --import keys.out
   script:
     - if [ "${ARCH}" == "i386" ] && [[ "${DIST}" != "bionic" || "${DIST}" != "eoan" ]]; then exit 0; fi
-    - gpg --keyserver pgp.mit.edu --recv-keys "${GPG_KEY}" || gpg --keyserver keyserver.pgp.com --recv-keys "${GPG_KEY}" || gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "${GPG_KEY}"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz"
@@ -75,10 +101,12 @@ check:
     - mv ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz artifacts/${DOCKER_ARCH}/ubuntu-root.tar.gz
     - mv SHA256SUMS sha-${DIST}.txt
   artifacts:
+    when: on_success
     paths:
       - artifacts/
       - sha-${DIST}.txt
     expire_in: 20 minutes
+
 
 download:eoan:
   extends: .download
@@ -140,9 +168,8 @@ build:eoan:
     - when: never
   needs:
     - download:eoan
-  before_script:
-    - ARCHITECTURES="${ARCHITECTURES} i386"
   variables:
+    ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x i386"
     DIST: eoan
     VERSION: "19.10"
     TAGS: "eoan,19.10"
@@ -187,12 +214,11 @@ build:bionic:
   extends: .build
   needs:
     - download:bionic
-  before_script:
-    - ARCHITECTURES="${ARCHITECTURES} i386"
   variables:
     DIST: bionic
     VERSION: "18.04"
     TAGS: "bionic,18.04"
+    ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x i386"
 
 scan:eoan:
   tags: [ protected, jitesoft ]
