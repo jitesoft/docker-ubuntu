@@ -227,8 +227,6 @@ build:bionic:
 scan:eoan:
   tags: [ protected, jitesoft ]
   rules:
-    - if: "$SCAN"
-      when: always
     - if: '$DIST == "eoan"'
       when: always
     - when: never
@@ -241,8 +239,6 @@ scan:groovy:
   tags: [ protected, jitesoft ]
   extends: .container_scanning
   rules:
-    - if: "$SCAN"
-      when: always
     - if: '$DIST == "groovy"'
       when: always
     - when: never
@@ -254,8 +250,6 @@ scan:focal:
   tags: [ protected, jitesoft ]
   extends: .container_scanning
   rules:
-    - if: "$SCAN"
-      when: always
     - if: '$DIST == "focal"'
       when: always
     - when: never
@@ -267,8 +261,6 @@ scan:bionic:
   tags: [ protected, jitesoft ]
   extends: .container_scanning
   rules:
-    - if: "$SCAN"
-      when: always
     - if: '$DIST == "bionic"'
       when: always
     - when: never
