@@ -131,6 +131,12 @@ download:bionic:
 
 build:eoan:
   extends: .build
+  rules:
+    - if: "$SCAN"
+      when: never
+    - if: '$DIST == "eoan" && $BUILD'
+      when: always
+    - when: never
   needs:
     - download:eoan
   before_script:
@@ -141,6 +147,12 @@ build:eoan:
     TAGS: "eoan,19.10"
 
 build:groovy:
+  rules:
+    - if: "$SCAN"
+      when: never
+    - if: '$DIST == "groovy" && $BUILD'
+      when: always
+    - when: never
   extends: .build
   needs:
     - download:groovy
@@ -151,6 +163,12 @@ build:groovy:
 
 build:focal:
   extends: .build
+  rules:
+    - if: "$SCAN"
+      when: never
+    - if: '$DIST == "focal" && $BUILD'
+      when: always
+    - when: never
   needs:
     - download:focal
   variables:
@@ -159,6 +177,12 @@ build:focal:
     TAGS: "focal,20.04,latest,lts"
 
 build:bionic:
+  rules:
+    - if: "$SCAN"
+      when: never
+    - if: '$DIST == "bionic" && $BUILD'
+      when: always
+    - when: never
   extends: .build
   needs:
     - download:bionic
