@@ -69,7 +69,7 @@ check:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz"
     - gpg --verify SHA256SUMS.gpg SHA256SUMS
-    - sha256sum -c SHA256SUMS
+    - grep "${ARCH}" SHA256SUMS | sha256sum -c -
     - DOCKER_ARCH=$(helper arch ${ARCH})
     - mkdir -p artifacts/${DOCKER_ARCH}
     - mv ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz artifacts/${DOCKER_ARCH}/ubuntu-root.tar.gz
