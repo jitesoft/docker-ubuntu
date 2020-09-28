@@ -32,9 +32,8 @@ check:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - touch sha-${DIST}.txt
     - CURR=$(cat sha-${DIST}.txt)
-    - CURR="${CURR:-nada}"
     - |
-      if [ "$(CURR)" != "$(cat SHASUMS)" ]; then
+      if [ "${CURR}" != "$(cat SHA256SUMS)" ]; then
         echo "Build ${DIST}"
         curl -F token=${CI_JOB_TOKEN} -F ref=master -F "variables[DIST]=${DIST}" -F "variables[VERSION]=${VERSION}" -F "variables[BUILD]=true" https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/trigger/pipeline
       else
