@@ -229,7 +229,7 @@ scan:eoan:
   rules:
     - if: "$SCAN"
       when: always
-    - if: '$DIST'
+    - if: '$DIST == "eoan"'
       when: always
     - when: never
   extends: .container_scanning
@@ -243,7 +243,7 @@ scan:groovy:
   rules:
     - if: "$SCAN"
       when: always
-    - if: '$DIST'
+    - if: '$DIST == "groovy"'
       when: always
     - when: never
   variables:
@@ -256,7 +256,7 @@ scan:focal:
   rules:
     - if: "$SCAN"
       when: always
-    - if: '$DIST'
+    - if: '$DIST == "focal"'
       when: always
     - when: never
   variables:
@@ -269,7 +269,7 @@ scan:bionic:
   rules:
     - if: "$SCAN"
       when: always
-    - if: '$DIST'
+    - if: '$DIST == "bionic"'
       when: always
     - when: never
   variables:
