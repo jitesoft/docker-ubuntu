@@ -64,7 +64,7 @@ check:
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
     - if [ "${ARCH}" == "i386" ] && [[ "${DIST}" != "bionic" || "${DIST}" != "eoan" ]]; then exit 0; fi
-    - gpg --list-keys ${GPG_KEY} || gpg --receive-keys ${GPG_KEY}
+    - gpg --receive-keys ${GPG_KEY}
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz"
