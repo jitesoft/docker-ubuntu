@@ -11,6 +11,7 @@ variables:
   ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
 
 check:
+  image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   stage: check
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
