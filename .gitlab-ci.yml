@@ -2,6 +2,7 @@ include:
   - https://gitlab.com/jitesoft/gitlab-ci-lib/raw/master/Scan/trivy.yml
 
 stages:
+  - check
   - download
   - build
   - scan
@@ -10,6 +11,7 @@ variables:
   ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
 
 check:
+  stage: check
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
@@ -37,6 +39,9 @@ check:
         echo "Only scan ${DIST}"
         curl -F token=${CI_JOB_TOKEN} -F ref=master -F "variables[DIST]=${DIST}" -F "variables[VERSION]=${VERSION}" -F "variables[SCAN]=true" https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/trigger/pipeline
       fi
+  artifacts:
+    paths:
+      - sha-${DIST}.txt
   cache:
     policy: pull
     key: ubuntu-${DIST}-sha
@@ -44,6 +49,7 @@ check:
       - sha-${DIST}.txt
 
 .download:
+  stage: download
   parallel:
     matrix:
       - { ARCH: "amd64", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
@@ -66,9 +72,11 @@ check:
     - DOCKER_ARCH=$(helper arch ${ARCH})
     - mkdir -p artifacts/${DOCKER_ARCH}
     - mv ubuntu-${DIST}-core-cloudimg-${ARCH}-root.tar.gz artifacts/${DOCKER_ARCH}/ubuntu-root.tar.gz
+    - mv SHASUMS sha-${DIST}.txt
   artifacts:
     paths:
       - artifacts/
+      - sha-${DIST}.txt
     expire_in: 20 minutes
 
 download:eoan:
@@ -114,6 +122,11 @@ download:bionic:
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu,ghcr.io/jitesoft/ubuntu" "${TAGS}")
     - ARCH_LIST=$(helper archlist ${ARCHITECTURES})
     - docker buildx build --platform ${ARCH_LIST} --push ${TAG_LIST} --progress plain --build-arg VERSION=${VERSION} --build-arg NAME=${DIST} .
+  cache:
+    policy: push
+    key: ubuntu-${DIST}-sha
+    paths:
+      - sha-${DIST}.txt
   tags: [ jitesoft, buildx, protected ]
 
 build:eoan:
