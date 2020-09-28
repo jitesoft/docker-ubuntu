@@ -31,6 +31,7 @@ check:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - touch sha-${DIST}.txt
     - CURR=$(cat sha-${DIST}.txt)
+    - CURR="${CURR:-nada}"
     - |
       if [ "$(CURR)" != "$(cat SHASUMS)" ]; then
         echo "Build ${DIST}"
