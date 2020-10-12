@@ -24,11 +24,11 @@ check:
     GIT_STRATEGY: none
   parallel:
     matrix:
-      - { VERSION: "14.04", DIST: "trusty" }
-      - { VERSION: "16.04", DIST: "xenial" }
-      - { VERSION: "18.04", DIST: "bionic" }
-      - { VERSION: "20.04", DIST: "focal" }
-      - { VERSION: "20.10", DIST: "groovy" }
+      - { VERSION: "14.04", DIST: "trusty", TAGS: "trusty,14.04" }
+      - { VERSION: "16.04", DIST: "xenial", TAGS: "xenial,16.04" }
+      - { VERSION: "18.04", DIST: "bionic", TAGS: "bionic,18.04" }
+      - { VERSION: "20.04", DIST: "focal", TAGS: "focal,20.04,latest,lts" }
+      - { VERSION: "20.10", DIST: "groovy", TAGS: "groovy,20.10,next" }
   script:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - touch sha-${DIST}.txt
@@ -36,7 +36,7 @@ check:
     - |
       if [ "${CURR}" != "$(cat SHA256SUMS)" ]; then
         echo "Build ${DIST}"
-        curl -F token=${CI_JOB_TOKEN} -F ref=master -F "variables[DIST]=${DIST}" -F "variables[VERSION]=${VERSION}" -F "variables[BUILD]=true" https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/trigger/pipeline
+        curl -F token=${CI_JOB_TOKEN} -F ref=master -F "variables[DIST]=${DIST}" -F "variables[TAGS]=${TAGS}" -F "variables[VERSION]=${VERSION}" -F "variables[BUILD]=true" https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/trigger/pipeline
       else
         echo "Only scan ${DIST}"
         curl -F token=${CI_JOB_TOKEN} -F ref=master -F "variables[DIST]=${DIST}" -F "variables[VERSION]=${VERSION}" -F "variables[SCAN]=true" https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/trigger/pipeline
@@ -72,7 +72,13 @@ gpg:
     paths:
       - keys.out
 
-.download:
+download:
+  rules:
+    - if: "$SCAN"
+      when: never
+    - if: '$BUILD'
+      when: always
+    - when: never
   needs:
     - job: gpg
       artifacts: true
@@ -93,7 +99,7 @@ gpg:
   script:
     - |
       if [ "${ARCH}" == "i386" ]; then
-        if [ "${DIST}" != "bionic" ] && [ "${DIST}" != "eoan" ]; then
+        if [ "${DIST}" != "xenial" ] && [ "${DIST}" != "trusty" ] && [ "${DIST}" != "bionic" ]; then
           echo "Arch is i386, can not build ${DIST} for i386 so skipping job"
           exit 0
         fi
@@ -113,42 +119,6 @@ gpg:
       - artifacts/
       - sha-${DIST}.txt
 
-download:eoan:
-  extends: .download
-  rules:
-    - if: "$SCAN"
-      when: never
-    - if: '$DIST == "eoan" && $BUILD'
-      when: always
-    - when: never
-
-download:groovy:
-  extends: .download
-  rules:
-    - if: "$SCAN"
-      when: never
-    - if: '$DIST == "groovy" && $BUILD'
-      when: always
-    - when: never
-
-download:focal:
-  extends: .download
-  rules:
-    - if: "$SCAN"
-      when: never
-    - if: '$DIST == "focal" && $BUILD'
-      when: always
-    - when: never
-
-download:bionic:
-  extends: .download
-  rules:
-    - if: "$SCAN"
-      when: never
-    - if: '$DIST == "bionic" && $BUILD'
-      when: always
-    - when: never
-
 .build:
   stage: build
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
@@ -163,108 +133,37 @@ download:bionic:
       - sha-${DIST}.txt
   tags: [ jitesoft, buildx, protected ]
 
-build:eoan:
+build:xenial-trusty-bionic:
   extends: .build
   rules:
     - if: "$SCAN"
       when: never
-    - if: '$DIST == "eoan" && $BUILD'
-      when: always
+    - if: '($DIST == "xenial" || $DIST == "trusty" || $DIST == "bionic") && $BUILD'
+      when: on_success
     - when: never
   needs:
-    - download:eoan
+    - download
   variables:
     ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x i386"
-    DIST: eoan
-    VERSION: "19.10"
-    TAGS: "eoan,19.10"
 
-build:groovy:
+build:
   rules:
     - if: "$SCAN"
       when: never
-    - if: '$DIST == "groovy" && $BUILD'
-      when: always
+    - if: '$BUILD'
+      when: on_success
     - when: never
   extends: .build
   needs:
-    - download:groovy
-  variables:
-    DIST: groovy
-    VERSION: "20.10"
-    TAGS: "groovy,20.10,next"
+    - download
 
-build:focal:
-  extends: .build
-  rules:
-    - if: "$SCAN"
-      when: never
-    - if: '$DIST == "focal" && $BUILD'
-      when: always
-    - when: never
-  needs:
-    - download:focal
-  variables:
-    DIST: focal
-    VERSION: "20.04"
-    TAGS: "focal,20.04,latest,lts"
-
-build:bionic:
-  rules:
-    - if: "$SCAN"
-      when: never
-    - if: '$DIST == "bionic" && $BUILD'
-      when: always
-    - when: never
-  extends: .build
-  needs:
-    - download:bionic
-  variables:
-    DIST: bionic
-    VERSION: "18.04"
-    TAGS: "bionic,18.04"
-    ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x i386"
-
-scan:eoan:
+scan:
   tags: [ protected, jitesoft ]
   rules:
-    - if: '$DIST == "eoan"'
+    - if: '$DIST'
       when: always
     - when: never
   extends: .container_scanning
   variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:eoan"
-    GIT_STRATEGY: none
-
-scan:groovy:
-  tags: [ protected, jitesoft ]
-  extends: .container_scanning
-  rules:
-    - if: '$DIST == "groovy"'
-      when: always
-    - when: never
-  variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:groovy"
-    GIT_STRATEGY: none
-
-scan:focal:
-  tags: [ protected, jitesoft ]
-  extends: .container_scanning
-  rules:
-    - if: '$DIST == "focal"'
-      when: always
-    - when: never
-  variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:focal"
-    GIT_STRATEGY: none
-
-scan:bionic:
-  tags: [ protected, jitesoft ]
-  extends: .container_scanning
-  rules:
-    - if: '$DIST == "bionic"'
-      when: always
-    - when: never
-  variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:bionic"
+    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:${DIST}"
     GIT_STRATEGY: none
