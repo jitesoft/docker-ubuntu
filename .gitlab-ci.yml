@@ -97,7 +97,7 @@ download:
     - gpg --import keys.out
   script:
     - |
-      if [ "$(echo ${DISTS} | grep ${DIST} || echo false)" == "false" ];
+      if [ "$(echo ${DISTS} | grep ${DIST} || echo false)" == "false" ]; then
           echo "Arch is ${ARCH}, can not build ${DIST} for ${ARCH} (only ${DISTS}) so skipping job"
           exit 0
       fi
