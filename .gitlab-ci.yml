@@ -7,9 +7,6 @@ stages:
   - build
   - scan
 
-variables:
-  ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
-
 check:
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   stage: check
@@ -59,6 +56,8 @@ gpg:
     - if: "$SCAN"
       when: never
     - when: never
+  variables:
+    GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81"
   script:
     - if [ -f keys.out ]; then gpg --import keys.out; fi
     - gpg --list-keys ${GPG_KEY} || (gpg --keyserver pgp.mit.edu --recv-keys "${GPG_KEY}" || gpg --keyserver keyserver.pgp.com --recv-keys "${GPG_KEY}" || gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "${GPG_KEY}")
@@ -85,12 +84,12 @@ download:
   stage: download
   parallel:
     matrix:
-      - { ARCH: "amd64", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
-      - { ARCH: "arm64", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
-      - { ARCH: "armhf", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
-      - { ARCH: "ppc64el", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
-      - { ARCH: "s390x", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
-      - { ARCH: "i386", GPG_KEY: "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81" }
+      - { ARCH: "amd64", DISTS: "trusty xenial bionic focal groovy" }
+      - { ARCH: "arm64", DISTS: "trusty xenial bionic focal groovy" }
+      - { ARCH: "armhf", DISTS: "trusty xenial bionic focal groovy" }
+      - { ARCH: "ppc64el", DISTS: "trusty xenial bionic focal groovy" }
+      - { ARCH: "s390x", DISTS: "xenial bionic focal groovy" }
+      - { ARCH: "i386", DISTS: "trusty xenial bionic" }
   variables:
     GIT_STRATEGY: none
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
@@ -98,11 +97,9 @@ download:
     - gpg --import keys.out
   script:
     - |
-      if [ "${ARCH}" == "i386" ]; then
-        if [ "${DIST}" != "xenial" ] && [ "${DIST}" != "trusty" ] && [ "${DIST}" != "bionic" ]; then
-          echo "Arch is i386, can not build ${DIST} for i386 so skipping job"
+      if [ "$(echo ${DISTS} | grep ${DIST} || echo false)" == "false" ];
+          echo "Arch is ${ARCH}, can not build ${DIST} for ${ARCH} (only ${DISTS}) so skipping job"
           exit 0
-        fi
       fi
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS.gpg"
@@ -121,6 +118,7 @@ download:
 
 .build:
   stage: build
+  variables:
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu,ghcr.io/jitesoft/ubuntu" "${TAGS}")
@@ -133,12 +131,25 @@ download:
       - sha-${DIST}.txt
   tags: [ jitesoft, buildx, protected ]
 
-build:xenial-trusty-bionic:
+build:trusty:
   extends: .build
   rules:
     - if: "$SCAN"
       when: never
-    - if: '($DIST == "xenial" || $DIST == "trusty" || $DIST == "bionic") && $BUILD'
+    - if: '$DIST == "trusty" && $BUILD'
+      when: on_success
+    - when: never
+  needs:
+    - download
+  variables:
+    ARCHITECTURES: "amd64 arm64 armhf ppc64el i386"
+
+build:xenial-bionic:
+  extends: .build
+  rules:
+    - if: "$SCAN"
+      when: never
+    - if: '($DIST == "xenial" || $DIST == "bionic") && $BUILD'
       when: on_success
     - when: never
   needs:
@@ -156,6 +167,8 @@ build:
   extends: .build
   needs:
     - download
+  variables:
+    ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
 
 scan:
   tags: [ protected, jitesoft ]
