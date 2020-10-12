@@ -150,7 +150,7 @@ build:
   rules:
     - if: "$SCAN"
       when: never
-    - if: '$BUILD'
+    - if: '($DIST != "xenial" && $DIST != "trusty" && $DIST != "bionic") && $BUILD'
       when: on_success
     - when: never
   extends: .build
