@@ -14,35 +14,40 @@ Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `a
 
 ### Docker Hub
 
-* `groovy`, `20.10`, `next`
-* `focal`, `20.04`, `latest`, `lts`
-* `eoan`, `19.10`
-* `bionic`, `18.04`
-
+* `jitesoft/ubuntu`
+    * `groovy`, `20.10`, `next`
+    * `focal`, `20.04`, `latest`, `lts`
+    * `bionic`, `18.04`
+    * `xenail`, `16.04`
+    * `trusty`, `14.04`
+    
 ### GitHub
 
 * `ghcr.io/jitesoft/ubuntu`
     * `groovy`, `20.10`, `next`
     * `focal`, `20.04`, `latest`, `lts`
-    * `eoan`, `19.10`
     * `bionic`, `18.04`
+    * `xenail`, `16.04`
+    * `trusty`, `14.04`
 
 ### GitLab
 
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
     * `groovy`, `20.10`, `next`
     * `focal`, `20.04`, `latest`, `lts`
-    * `eoan`, `19.10`
     * `bionic`, `18.04`
-
+    * `xenail`, `16.04`
+    * `trusty`, `14.04`
+    
 ### Quay.io
 
 * `quay.io/jitesoft/ubuntu`
     * `groovy`, `20.10`, `next`
     * `focal`, `20.04`, `latest`, `lts`
-    * `eoan`, `19.10`
     * `bionic`, `18.04`
-
+    * `xenail`, `16.04`
+    * `trusty`, `14.04`
+    
 ## Dockerfile
 
 Dockerfile can be found at [GitLab](https://gitlab.com/jitesoft/dockerfiles/ubuntu) and [GitHub](https://github.com/jitesoft/docker-ubuntu)
