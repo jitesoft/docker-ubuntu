@@ -24,8 +24,8 @@ check:
     GIT_STRATEGY: none
   parallel:
     matrix:
+      - { VERSION: "16.04", DIST: "xenial" }
       - { VERSION: "18.04", DIST: "bionic" }
-      - { VERSION: "19.10", DIST: "eoan" }
       - { VERSION: "20.04", DIST: "focal" }
       - { VERSION: "20.10", DIST: "groovy" }
   script:
