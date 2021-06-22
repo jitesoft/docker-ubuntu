@@ -2,7 +2,6 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/jitesoft/ubuntu.svg)](https://hub.docker.com/r/jitesoft/ubuntu)
 [![Back project](https://img.shields.io/badge/Open%20Collective-Tip%20the%20devs!-blue.svg)](https://opencollective.com/jitesoft-open-source)
-[![pipeline status](https://gitlab.com/jitesoft/dockerfiles/ubuntu/badges/master/pipeline.svg)](https://gitlab.com/jitesoft/dockerfiles/ubuntu/commits/master)
 
 Dockerfile with Ubuntu core built from https://partner-images.canonical.com/core/
 
@@ -10,11 +9,15 @@ Dockerfile with Ubuntu core built from https://partner-images.canonical.com/core
 
 Tags are named after version name and version number, latest lts is tagged with `lts` and latest version is tagged with `latest`.
 
-Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `armv7`, `ppc64le`, `s390x`, `x86`
+All images is built for the following architectures: `amd64/x86_64`, `arm64`, `armv7`, `ppc64le`.  
+Images after Xenial also include images for `s390x`.  
+Images before focal also includes images for `i386`.  
 
 ### Docker Hub
 
 * `jitesoft/ubuntu`
+    * `impish`, `21.10`, `next`
+    * `hirsute`, `21.04`
     * `groovy`, `20.10`, `next`
     * `focal`, `20.04`, `latest`, `lts`
     * `bionic`, `18.04`
@@ -24,7 +27,9 @@ Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `a
 ### GitHub
 
 * `ghcr.io/jitesoft/ubuntu`
-    * `groovy`, `20.10`, `next`
+    * `impish`, `21.10`, `next`
+    * `hirsute`, `21.04`
+    * `groovy`, `20.10`
     * `focal`, `20.04`, `latest`, `lts`
     * `bionic`, `18.04`
     * `xenail`, `16.04`
@@ -33,21 +38,14 @@ Each image is built for the following architectures: `amd64/x86_64`, `arm64`, `a
 ### GitLab
 
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
-    * `groovy`, `20.10`, `next`
+    * `impish`, `21.10`, `next`
+    * `hirsute`, `21.04`    
+    * `groovy`, `20.10`
     * `focal`, `20.04`, `latest`, `lts`
     * `bionic`, `18.04`
     * `xenail`, `16.04`
     * `trusty`, `14.04`
-    
-### Quay.io
 
-* `quay.io/jitesoft/ubuntu`
-    * `groovy`, `20.10`, `next`
-    * `focal`, `20.04`, `latest`, `lts`
-    * `bionic`, `18.04`
-    * `xenail`, `16.04`
-    * `trusty`, `14.04`
-    
 ## Dockerfile
 
 Dockerfile can be found at [GitLab](https://gitlab.com/jitesoft/dockerfiles/ubuntu) and [GitHub](https://github.com/jitesoft/docker-ubuntu)
@@ -82,9 +80,6 @@ If you wish to sponsor our projects, reach out to the email above or visit any o
 
 Jitesoft images are built via GitLab CI on runners hosted by the following wonderful organisations:
 
-<a href="https://www.linaro.org/">
-  <img src="https://raw.githubusercontent.com/jitesoft/misc/master/sponsors/linaro.png" width="256" alt="Linaro logo" />
-</a>
 <a href="https://fosshost.org/">
   <img src="https://raw.githubusercontent.com/jitesoft/misc/master/sponsors/fosshost.png" width="256" alt="Fosshost logo" />
 </a>

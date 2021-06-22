@@ -25,7 +25,9 @@ check:
       - { VERSION: "16.04", DIST: "xenial", TAGS: "xenial,16.04" }
       - { VERSION: "18.04", DIST: "bionic", TAGS: "bionic,18.04" }
       - { VERSION: "20.04", DIST: "focal", TAGS: "focal,20.04,latest,lts" }
-      - { VERSION: "20.10", DIST: "groovy", TAGS: "groovy,20.10,next" }
+      - { VERSION: "20.10", DIST: "groovy", TAGS: "groovy,20.10" }
+      - { VERSION: "21.04", DIST: "hirsute", TAGS: "hirsute,21.04" }
+      - { VERSION: "21.10", DIST: "impish", TAGS: "impish,21.10,next" }
   script:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - touch sha-${DIST}.txt
@@ -84,11 +86,11 @@ download:
   stage: download
   parallel:
     matrix:
-      - { ARCH: "amd64", DISTS: "trusty xenial bionic focal groovy" }
-      - { ARCH: "arm64", DISTS: "trusty xenial bionic focal groovy" }
-      - { ARCH: "armhf", DISTS: "trusty xenial bionic focal groovy" }
-      - { ARCH: "ppc64el", DISTS: "trusty xenial bionic focal groovy" }
-      - { ARCH: "s390x", DISTS: "xenial bionic focal groovy" }
+      - { ARCH: "amd64", DISTS: "trusty xenial bionic focal groovy impish hirsute" }
+      - { ARCH: "arm64", DISTS: "trusty xenial bionic focal groovy impish hirsute" }
+      - { ARCH: "armhf", DISTS: "trusty xenial bionic focal groovy impish hirsute" }
+      - { ARCH: "ppc64el", DISTS: "trusty xenial bionic focal groovy impish hirsute" }
+      - { ARCH: "s390x", DISTS: "xenial bionic focal groovy impish hirsute" }
       - { ARCH: "i386", DISTS: "trusty xenial bionic" }
   variables:
     GIT_STRATEGY: none
@@ -121,6 +123,7 @@ download:
   variables:
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   script:
+    - echo "Building ${DIST} image."
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/ubuntu,ghcr.io/jitesoft/ubuntu" "${TAGS}")
     - ARCH_LIST=$(helper archlist ${ARCHITECTURES})
     - docker buildx build --platform ${ARCH_LIST} --push ${TAG_LIST} --progress plain --build-arg VERSION=${VERSION} --build-arg NAME=${DIST} .
