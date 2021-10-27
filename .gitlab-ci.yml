@@ -1,10 +1,14 @@
 include:
-  - https://gitlab.com/jitesoft/gitlab-ci-lib/raw/master/Scan/trivy.yml
+  - file: /Scan/trivy.yml
+    project: jitesoft/gitlab-ci-lib
+   - file: /OCI/sign.yml
+     project: jitesoft/gitlab-ci-lib
 
 stages:
   - check
   - download
   - build
+  - sign
   - scan
 
 check:
@@ -172,6 +176,19 @@ build:
     - download
   variables:
     ARCHITECTURES: "amd64 arm64 armhf ppc64el s390x"
+
+sign:
+  extends: .sign
+  variables:
+    SIGN_IMAGES: "${CI_REGISTRY_IMAGE},jitesoft/ubuntu,ghcr.io/jitesoft/ubuntu"
+    SIGN_TAGS: "${TAGS}"
+    COSIGN_ANNOTATIONS: "-a sig=jitesoft-bot"
+  tags: [ jitesoft, protected, buildx ]
+  stage: sign
+  rules:
+    - if: "$BUILD"
+      when: on_success
+    - when: never
 
 scan:
   tags: [ protected, jitesoft ]
