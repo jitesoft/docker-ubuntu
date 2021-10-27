@@ -29,7 +29,6 @@ check:
       - { VERSION: "16.04", DIST: "xenial", TAGS: "xenial,16.04" }
       - { VERSION: "18.04", DIST: "bionic", TAGS: "bionic,18.04" }
       - { VERSION: "20.04", DIST: "focal", TAGS: "focal,20.04,latest,lts" }
-      - { VERSION: "20.10", DIST: "groovy", TAGS: "groovy,20.10" }
       - { VERSION: "21.04", DIST: "hirsute", TAGS: "hirsute,21.04" }
       - { VERSION: "21.10", DIST: "impish", TAGS: "impish,21.10,next" }
   script:
