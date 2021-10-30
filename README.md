@@ -42,11 +42,6 @@ This image follows the [Jitesoft image label specification 1.0.0](https://gitlab
 
 Cosign public key for this image can be found at [https://jitesoft.com/cosign.pub](https://jitesoft.com/cosign.pub).
 
-### Licenses
-
-Files in this repository is released under the MIT license.  
-Read the Ubuntu license [here](https://ubuntu.com/licensing).
-
 ### Sponsors
 
 Sponsoring is vital for the further development and maintaining of open source projects.  
