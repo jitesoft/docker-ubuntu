@@ -13,38 +13,13 @@ All images is built for the following architectures: `amd64/x86_64`, `arm64`, `a
 Images after Xenial also include images for `s390x`.  
 Images before focal also includes images for `i386`.  
 
-### Docker Hub
+### Registries
+
+The `jitesoft/ubuntu` image can be found at the following registries:
 
 * `jitesoft/ubuntu`
-    * `impish`, `21.10`, `next`
-    * `hirsute`, `21.04`
-    * `groovy`, `20.10`, `next`
-    * `focal`, `20.04`, `latest`, `lts`
-    * `bionic`, `18.04`
-    * `xenail`, `16.04`
-    * `trusty`, `14.04`
-    
-### GitHub
-
 * `ghcr.io/jitesoft/ubuntu`
-    * `impish`, `21.10`, `next`
-    * `hirsute`, `21.04`
-    * `groovy`, `20.10`
-    * `focal`, `20.04`, `latest`, `lts`
-    * `bionic`, `18.04`
-    * `xenail`, `16.04`
-    * `trusty`, `14.04`
-
-### GitLab
-
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
-    * `impish`, `21.10`, `next`
-    * `hirsute`, `21.04`    
-    * `groovy`, `20.10`
-    * `focal`, `20.04`, `latest`, `lts`
-    * `bionic`, `18.04`
-    * `xenail`, `16.04`
-    * `trusty`, `14.04`
 
 ## Dockerfile
 
@@ -62,6 +37,10 @@ Ubuntu licenses and information can be found at: https://ubuntu.com/licensing
 ### Image labels
 
 This image follows the [Jitesoft image label specification 1.0.0](https://gitlab.com/snippets/1866155).
+
+### Signature
+
+Cosign public key for this image can be found at [https://jitesoft.com/cosign.pub](https://jitesoft.com/cosign.pub).
 
 ### Licenses
 
