@@ -22,7 +22,7 @@ LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>" \
       org.opencontainers.image.vendor="Jitesoft" \
       org.opencontainers.image.source="https://gitlab.com/jitesoft/dockerfiles/ubuntu" \
       # Artifact hub annotations
-      io.artifacthub.package.alternative-locations="oci://index.docker.io/jitesoft/debian,oci://ghcr.io/jitesoft/ubuntu" \
+      io.artifacthub.package.alternative-locations="oci://index.docker.io/jitesoft/ubuntu,oci://ghcr.io/jitesoft/ubuntu" \
       io.artifacthub.package.readme-url="https://gitlab.com/jitesoft/dockerfiles/ubuntu/-/raw/master/README.md" \
       io.artifacthub.package.logo-url="https://jitesoft.com/favicon-96x96.png"
 
