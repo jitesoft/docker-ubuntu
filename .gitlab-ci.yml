@@ -30,6 +30,7 @@ check:
       - { VERSION: "18.04", DIST: "bionic", TAGS: "bionic,18.04" }
       - { VERSION: "20.04", DIST: "focal", TAGS: "focal,20.04,latest,lts" }
       - { VERSION: "21.10", DIST: "impish", TAGS: "impish,21.10" }
+      - { VERSION: "22.04", DIST: "jammy", TAGS: "jammy,22.04,next" }
   script:
     - curl -OsS "https://partner-images.canonical.com/core/${DIST}/current/SHA256SUMS"
     - touch sha-${DIST}.txt
@@ -88,11 +89,11 @@ download:
   stage: download
   parallel:
     matrix:
-      - { ARCH: "amd64", DISTS: "trusty xenial bionic focal groovy impish" }
-      - { ARCH: "arm64", DISTS: "trusty xenial bionic focal groovy impish" }
-      - { ARCH: "armhf", DISTS: "trusty xenial bionic focal groovy impish" }
-      - { ARCH: "ppc64el", DISTS: "trusty xenial bionic focal groovy impish" }
-      - { ARCH: "s390x", DISTS: "xenial bionic focal groovy impish" }
+      - { ARCH: "amd64", DISTS: "trusty xenial bionic focal impish jammy" }
+      - { ARCH: "arm64", DISTS: "trusty xenial bionic focal impish jammy" }
+      - { ARCH: "armhf", DISTS: "trusty xenial bionic focal impish jammy" }
+      - { ARCH: "ppc64el", DISTS: "trusty xenial bionic focal impish jammy" }
+      - { ARCH: "s390x", DISTS: "xenial bionic focal groovy impish jammy" }
       - { ARCH: "i386", DISTS: "trusty xenial bionic" }
   variables:
     GIT_STRATEGY: none
