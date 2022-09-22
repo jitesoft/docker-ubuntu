@@ -10,7 +10,7 @@ Dockerfile with Ubuntu core built from https://partner-images.canonical.com/core
 Tags are named after version name and version number, latest lts is tagged with `lts` and latest version is tagged with `latest`.
 
 All images is built for the following architectures: `amd64/x86_64`, `arm64`, `armv7`, `ppc64le`.  
-Images after Xenial also include images for `s390x`.  
+
 Images before focal also includes images for `i386`.  
 
 ### Registries
@@ -20,6 +20,7 @@ The `jitesoft/ubuntu` image can be found at the following registries:
 * `jitesoft/ubuntu`
 * `ghcr.io/jitesoft/ubuntu`
 * `registry.gitlab.com/jitesoft/dockerfiles/ubuntu`
+* `quay.io/jitesoft/ubuntu`
 
 ## Dockerfile
 
